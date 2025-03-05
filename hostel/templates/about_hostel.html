@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Hostel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        p {
+            color: #555;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        .image-container img {
+            width: 100%;
+            max-height: 300px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .rules {
+            text-align: left;
+            margin-top: 20px;
+        }
+        .rules h2 {
+            font-size: 22px;
+            color: #4C9C9C;
+        }
+        .rules ul {
+            list-style-type: decimal;
+            padding-left: 20px;
+        }
+        .rules li {
+            font-size: 16px;
+            margin-bottom: 8px;
+            color: #444;
+        }
+        .warden-info {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+        }
+        .footer {
+            margin-top: 20px;
+            padding: 10px;
+            background: #4C9C9C;
+            color: white;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .back-btn {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 10px 15px;
+            background: #4C9C9C;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .back-btn:hover {
+            background: #4C9C9C;
+        }
+        .college-name {
+            font-size: 22px;
+            font-weight: bold;
+            color: #4C9C9C;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="college-name">
+            JHARA SIRHA GOVERNMENT ENGINEERING COLLEGE JAGDALPUR CHHATTISGARH
+        </div>
+
+        <a href="{% url 'dashboard' hosteller.roll_number %}" class="back-link">← Back to Dashboard</a>
+
+        <div class="image-container">
+{% load static %}
+
+<img src="{% static 'clg_image/laali.png' %}" alt="Hostel Image" style="width: 100%; max-width: 600px; border-radius: 10px;">
+        </div>
+        <h1>About GEC Girls Hostel</h1>
+        <p>
+            The GEC Girls Hostel, Jagdalpur, provides a safe and comfortable stay for students.
+            Our hostel is equipped with modern amenities, including 24/7 security, Wi-Fi, mess facilities,
+            and recreational spaces. We aim to create a home-like environment for our students to focus
+            on their studies while ensuring their well-being.
+        </p>
+        <p>
+            Rooms are allocated based on availability, and hostel rules ensure discipline and safety
+            for all residents. The warden and staff are always available to address students' concerns.
+        </p>
+
+        <!-- Hostel Rules Section -->
+        <div class="rules">
+            <h2>🏠 Hostel Rules & Regulations</h2>
+            <ul>
+                <li>Hostellers must return to the hostel by 9:00 PM.</li>
+                <li>Attendance will be taken daily at 9:30 PM.</li>
+                <li>Visitors are allowed only in the designated areas and during visiting hours.</li>
+                <li>Silence must be maintained in the hostel premises after 10:00 PM.</li>
+                <li>Consumption of alcohol, drugs, or smoking is strictly prohibited.</li>
+                <li>Rooms should be kept clean and tidy at all times.</li>
+                <li>Students are responsible for their personal belongings.</li>
+                <li>Prior permission is required for night-outs or leaves.</li>
+                <li>Use of electrical appliances like heaters and induction stoves is not allowed.</li>
+                <li>Any form of ragging or bullying will lead to strict disciplinary action.</li>
+            </ul>
+        </div>
+
+        <!-- Warden Information -->
+        <div class="warden-info">
+    <h2>📞 Warden Contact</h2>
+    <p><strong>Name:</strong>Prof.Vandana Jangde</p>
+    <p><strong>Position:</strong>Assistant Professor of Chemistry</p>
+    <p><strong>Contact:</strong> +91 9876549036 </p>
+</div>
+
+
+
+
+
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+        <p><strong>🏡 Residence Register Project | Session: 2024-2025</strong></p>
+    </div>
+
+</body>
+</html>

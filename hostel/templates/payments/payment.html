@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Payment</title>
+    <!-- Add Bootstrap CSS link here -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .payment-container {
+            text-align: center;
+        }
+
+        .pay-now-btn {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .pay-now-btn:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container payment-container">
+        <h1>Payment Details</h1>
+        <!-- Add payments details here -->
+        <button class="btn btn-success pay-now-btn" id="rzp-button">Pay Now</button>
+    </div>
+
+    <!-- Add Razorpay script and initialization here -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        var razorpay_api_key = "{{ razorpay_api_key }}"; // Replace with your Razorpay API key
+
+        var options = {
+            key: razorpay_api_key,
+            amount: 50000, // Amount in paise (change as per your requirement)
+            currency: "INR",
+            name: "Your Company Name",
+            description: "Payment for Order #1234",
+            image: "https://your-company-logo-url.png",
+            order_id: "{{ order_id }}",
+            handler: function (response) {
+                // Handle the success response here
+                alert("Payment Successful! Payment ID: " + response.razorpay_payment_id);
+            },
+            prefill: {
+                name: "John Doe",
+                email: "johndoe@example.com",
+                contact: "9876543210"
+            },
+            notes: {
+                address: "Razorpay Corporate Office"
+            },
+            theme: {
+                color: "#28a745"
+            }
+        };
+
+        var rzp1 = new Razorpay(options);
+        rzp1.on("payment.failed", function (response) {
+            // Handle the failure response here
+            alert("Payment Failed! Reason: " + response.error.description);
+        });
+
+        document.getElementById("rzp-button").onclick = function () {
+            rzp1.open();
+        };
+    </script>
+</body>
+
+</html>

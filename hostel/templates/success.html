@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Pass Submitted</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(to right, #E0F7FA, #FFFFFF);
+            text-align: center;
+        }
+
+        .container {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.5s ease-in-out;
+            max-width: 400px;
+        }
+
+        .checkmark {
+            font-size: 60px;
+            color: #4CAF50;
+            animation: pop 0.5s ease-in-out;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #00796B;
+            margin: 20px 0;
+            animation: fadeIn 1s ease-in-out;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 500;
+            background: #00796B;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .back-button:hover {
+            background: #004D40;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="checkmark">✔️</div>
+        <div class="message">Leave Pass Submitted Successfully!</div>
+        <a href="{% url 'home' %}" class="back-button">Back to Home</a>
+    </div>
+</body>
+</html>

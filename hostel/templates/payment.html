@@ -1,0 +1,89 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #b3e0ff, #ffffff);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            max-width: 450px;
+            width: 90%;
+        }
+
+        h2 {
+            color: #006d77;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #444;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: 0.3s;
+        }
+
+        .btn-primary {
+            background-color: #66bfbf;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #006d77;
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background-color: #ccc;
+            color: black;
+        }
+
+        .btn-secondary:hover {
+            background-color: #999;
+            transform: scale(1.02);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Payment Successfully Completed ✅</h2>
+    <p>Thank you, <strong>{{ hosteller.name }}</strong>. Your payment has been successfully processed.</p>
+
+    <button class="btn btn-primary" onclick="window.location.href=`/hostel/hostel/generate_invoice/{{ hosteller.roll_number }}/`">
+        Generate Invoice
+    </button>
+
+    <button class="btn btn-secondary" onclick="window.location.href='/'">
+        Back to Home
+    </button>
+</div>
+
+</body>
+</html>

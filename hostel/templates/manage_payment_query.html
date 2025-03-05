@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Payment Queries</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f9;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td {
+            background-color: #ffffff;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .status-pending {
+            color: #D9534F;
+            background: #FDECEC;
+        }
+        .status-completed {
+            color: #5CB85C;
+            background: #E6F7E6;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+        .pending-btn {
+            background-color: #D9534F;
+        }
+        .completed-btn {
+            background-color: #5CB85C;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+         .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Manage Payment Queries</h2>
+    <a class="back-link" href="{% url 'home' %}">Back to Home</a>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hosteller Name</th>
+            <th>Semester</th>
+            <th>Branch</th>
+            <th>Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for payment in payments %}
+        <tr>
+            <td>{{ payment.id }}</td>
+            <td>{{ payment.hosteller.name }}</td>
+            <td>{{ payment.hosteller.semester }}</td>
+            <td>{{ payment.hosteller.branch }}</td>
+            <td>{{ payment.amount }}</td>
+            <td class="status {% if payment.check_status == 'pending' %}status-pending{% else %}status-completed{% endif %}" data-payment-id="{{ payment.id }}">
+                {{ payment.check_status|title }}
+            </td>
+            <td>
+                <button class="status-toggle-btn {% if payment.check_status == 'pending' %}pending-btn{% else %}completed-btn{% endif %}" data-payment-id="{{ payment.id }}">
+                    {% if payment.check_status == "pending" %}
+                        Mark as Completed
+                    {% else %}
+                        Mark as Pending
+                    {% endif %}
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+<script>
+document.querySelectorAll('.status-toggle-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const paymentId = this.dataset.paymentId;
+        const statusCell = document.querySelector(`.status[data-payment-id='${paymentId}']`);
+        const newStatus = statusCell.textContent.trim().toLowerCase() === "pending" ? "completed" : "pending";
+
+        // Get CSRF token from the page
+        const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        fetch('/manage_payment_query/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ payment_id: paymentId, status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusCell.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+                statusCell.classList.toggle('status-pending', newStatus === "pending");
+                statusCell.classList.toggle('status-completed', newStatus === "completed");
+
+                this.textContent = newStatus === "pending" ? "Mark as Completed" : "Mark as Pending";
+                this.classList.toggle('pending-btn', newStatus === "pending");
+                this.classList.toggle('completed-btn', newStatus === "completed");
+
+                alert("Payment status updated successfully!");
+            } else {
+                alert("Error updating payment status: " + data.error);
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+</script>
+
+
+</script>
+
+</body>
+</html>

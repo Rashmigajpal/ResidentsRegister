@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Submitted</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(to right, #E0F7FA, #FFFFFF);
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #4CAF50;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 15px auto;
+            animation: popIn 0.5s ease-out;
+        }
+
+        .checkmark svg {
+            width: 50px;
+            height: 50px;
+            stroke: white;
+            stroke-width: 6;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            animation: draw 0.8s ease-in-out forwards;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            color: #333;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        p {
+            color: #666;
+            margin-top: 10px;
+            font-size: 1rem;
+            animation: fadeInText 1s ease-in-out;
+        }
+
+        .btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: #00796B;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #004D40;
+        }
+
+        /* Animations */
+        @keyframes popIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes draw {
+            from {
+                stroke-dasharray: 0, 100;
+            }
+            to {
+                stroke-dasharray: 100, 100;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .back-link {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #00796B;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+        <div class="checkmark">
+            <svg viewBox="0 0 50 50">
+                <path d="M15 25 L22 32 L35 18"></path>
+            </svg>
+        </div>
+        <h2>Attendance Submitted Successfully!</h2>
+        <p>Your attendance has been recorded.</p>
+<a href="{% url 'dashboard' hosteller.roll_number %}" class="back-link">← Back to Dashboard</a>
+    </div>
+
+</body>
+</html>

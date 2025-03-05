@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .admin-dashboard {
+            display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Ensure max 3 columns per row */
+            gap: 20px;
+            width: 80%;
+            height: 80%;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+
+        button {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+        }
+
+        button:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+            transform: translateY(-5px);
+        }
+
+        button:active {
+            background-color: #2F6C6C; /* Even darker greenish-blue */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transform: translateY(2px);
+        }
+
+        button span {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 400;
+            margin-top: 8px;
+        }
+
+        .back-home {
+            margin-top: 20px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            background-color: #4C9C9C;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .back-home:hover {
+            background-color: #3A7D7D;
+            transform: translateY(-5px);
+        }
+
+        .back-home:active {
+            background-color: #2F6C6C;
+            transform: translateY(2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-dashboard {
+                width: 100%;
+                height: auto;
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .admin-dashboard {
+                grid-template-columns: 1fr;
+                grid-template-columns: repeat(3, 1fr); /* Ensure max 3 columns per row */
+
+            }
+
+            button {
+                font-size: 1rem;
+                padding: 16px;
+            }
+        }
+    </style>
+
+
+</head>
+
+<body>
+    <div class="admin-dashboard">
+        <div class="button-wrapper">
+            <button class="announcement-button" data-tooltip="Manage Announcements" data-url="{% url 'manage_announcements' %}">
+                Announcement
+                <span>Create & Update</span>
+            </button>
+        </div>
+        <div class="button-wrapper">
+            <button class="leave-pass-button" data-tooltip="Approve or Decline Leave Passes" data-url="{% url 'approval_leave_pass' %}">
+                Leave Pass
+                <span>Review Requests</span>
+            </button>
+        </div>
+
+<div class="button-wrapper">
+            <button class="complaint-button" data-tooltip="Resolve Student Complaints" data-url="{% url 'resolve_complaint' %}">
+                Complaints
+                <span>Handle Issues</span>
+            </button>
+        </div>
+        <div class="button-wrapper">
+            <button class="payment-query-button" data-tooltip="Manage Payment Queries" data-url="{% url 'manage_payment_query' %}">
+                Payment Query
+                <span>Track Finances</span>
+            </button>
+        </div>
+        <div class="button-wrapper">
+            <button class="attendance-button" data-tooltip="Manage Attendance Records" data-url="{% url 'manage_attendance' %}">
+                Attendance
+                <span>Check Records</span>
+            </button>
+        </div>
+        <div class="button-wrapper">
+            <button class="scan-qr-button" data-tooltip="Scan QR Codes" data-url="{% url 'scan_qr_code' %}">
+                Scan QR
+                <span>Track Entries</span>
+            </button>
+        </div>
+    </div>
+
+    <a class="back-home" href="{% url 'home' %}">Back to Home</a>
+
+    <script>
+        // Navigate to URLs using the 'data-url' attribute
+        function navigateTo(button) {
+            const url = button.getAttribute('data-url');
+            window.location.href = url;
+        }
+
+        // Attach event listeners to buttons
+        const buttons = document.querySelectorAll('button:not(.back-home)');
+        buttons.forEach(button => {
+            button.addEventListener('click', function() {
+                navigateTo(this);
+            });
+        });
+    </script>
+</body>
+</html>

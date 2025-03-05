@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback</title>
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .feedback-container {
+            max-width: 400px; /* Standardized width */
+            width: 90%;
+            padding: 25px;
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4C9C9C; /* Soft greenish-blue */
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        p {
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+
+        /* Form styling */
+        form {
+            text-align: left;
+            width: 100%;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 0.9rem;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        textarea {
+            height: 100px;
+            resize: vertical;
+        }
+
+        /* Button styling */
+        button {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: white;
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+        }
+
+        /* Back link */
+        a {
+            display: block;
+            margin-top: 15px;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        a:hover {
+            color: #3A7D7D;
+        }
+
+        /* Responsive design */
+        @media (max-width: 480px) {
+            .feedback-container {
+                width: 95%;
+                padding: 20px;
+            }
+
+            button {
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="feedback-container">
+        <h1>Submit Feedback</h1>
+       <form method="POST" action="{% url 'submit_feedback' hosteller.roll_number %}">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Submit</button>
+</form>
+
+        <a href="{% url 'dashboard' hosteller.roll_number %}" class="back-link">← Back to Dashboard</a>
+    </div>
+
+</body>
+</html>

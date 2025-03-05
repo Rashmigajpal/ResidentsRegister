@@ -1,0 +1,170 @@
+{% load custom_filters %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Attendance</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f3f4f7;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #4C9C9C;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #4C9C9C;
+            color: white;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-top: 20px;
+            font-weight: bold;
+            color: #4C9C9C;
+        }
+
+        .back-link {
+            display: inline-block;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+            margin-top: 20px;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        select {
+            padding: 5px;
+            font-size: 1rem;
+        }
+
+        button {
+            padding: 5px 10px;
+            font-size: 1rem;
+            cursor: pointer;
+            background-color: #4C9C9C;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #357575;
+        }
+        .button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: white;
+    background-color: #4C9C9C;
+    text-decoration: none;
+    border-radius: 5px;
+    border: none;
+    transition: 0.3s;
+}
+.button:hover {
+    background-color: #0056b3;
+}
+</style>
+    </style>
+</head>
+<body>
+    <div class="container">
+    <h1>Manage Attendance</h1>
+    <a href="{% url 'home' %}" class="button">Back to Home</a>
+
+    <h2>Attendance for {{ today }}</h2>
+
+    <div class="summary">
+        <p><strong>Total Students:</strong> 60</p>
+        <p><strong>Present Students:</strong> {{ present_students_count }}</p>
+    </div>
+
+    {% for semester, students in hostellers_by_semester.items %}
+        <h2>Semester {{ semester }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Hosteller Name</th>
+                    <th>Branch</th>
+                    <th>Attendance</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for student in students %}
+                    <tr>
+                        <td>{{ student.name }}</td>
+                        <td>{{ student.branch }}</td>
+                        <td>
+                            <select onchange="updateAttendance('{{ student.roll_number }}', this.value)">
+                                <option value="Present" {% if attendance_records|get_item:student.roll_number == "Present" %}selected{% endif %}>Present</option>
+                                <option value="Absent" {% if attendance_records|get_item:student.roll_number == "Absent" %}selected{% endif %}>Absent</option>
+                            </select>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% empty %}
+        <p class="message">No hostellers found.</p>
+    {% endfor %}
+</div>
+
+
+    <script>
+        function updateAttendance(hostellerId, status) {
+            fetch("{% url 'update_attendance' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: JSON.stringify({
+                    hosteller_id: hostellerId,
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>

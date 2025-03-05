@@ -1,0 +1,132 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Hosteller Profile</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF); /* Soft blue gradient */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: #fff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: auto;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #4C9C9C; /* Soft greenish-blue */
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        strong {
+            font-weight: 600;
+        }
+
+        img {
+            display: block;
+            max-width: 200px;
+            margin: 20px auto;
+            border: 3px solid #4C9C9C; /* Soft greenish-blue */
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        img:hover {
+            transform: scale(1.1);
+        }
+
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            color: #fff;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .button:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .button {
+                font-size: 0.9rem;
+                padding: 8px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Hosteller Profile</h1>
+    <p><strong>Name:</strong> {{ hosteller.name }}</p>
+    <p><strong>Roll Number:</strong> {{ hosteller.roll_number }}</p>
+    <p><strong>Mobile:</strong> {{ hosteller.mobile_number }}</p>
+    <p><strong>Branch:</strong> {{ hosteller.branch }}</p>
+    <p><strong>Semester:</strong> {{ hosteller.semester }}</p>
+    <p><strong>Address:</strong> {{ hosteller.address }}</p>
+
+
+    {% if hosteller.qr_image %}
+    <div>
+        <strong>Your QR Code:</strong>
+        <img alt="QR Code for {{ hosteller.name }}" src="{% static hosteller.qr_image %}">
+    </div>
+{% else %}
+    <p style="color: red;">No QR Code available for this hosteller.</p>
+{% endif %}
+
+
+    <div class="button-container">
+        <a class="button" href="{% url 'download_profile' hosteller.roll_number %}">Download Profile</a>
+        <a class="button" href="{% url 'hosteller_list' hosteller.hostel.id %}">Back to Hosteller List</a>
+    </div>
+</div>
+</body>
+
+</html>

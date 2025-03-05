@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Initiate Payment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            max-width: 400px;
+            margin: auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Initiate Payment</h2>
+    <p>Payment Type: <strong>{{ paymentType }}</strong></p>
+    <p>Amount: <strong>₹{{ amount }}</strong></p>
+
+    <form method="POST" action="{% url 'process_payment' %}">
+        {% csrf_token %}
+        <input type="hidden" name="paymentType" value="{{ paymentType }}">
+        <input type="hidden" name="amount" value="{{ amount }}">
+        <button type="submit">Proceed to Pay</button>
+    </form>
+</div>
+
+</body>
+</html>

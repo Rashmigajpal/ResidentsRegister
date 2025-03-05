@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exit Confirmation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .confirmation-container {
+            max-width: 600px;
+            width: 80%;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4C9C9C; /* Soft greenish-blue */
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+        }
+
+        .btn:active {
+            background-color: #2F6C6C; /* Even darker greenish-blue */
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .confirmation-container {
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="confirmation-container">
+        <h1>Exit Confirmation</h1>
+        <p>{{ hosteller.name }} has exited the hostel.</p>
+        <a href="{% url 'home' %}" class="btn">Back to Home</a>
+    </div>
+
+</body>
+</html>

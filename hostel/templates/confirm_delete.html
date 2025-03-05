@@ -1,0 +1,84 @@
+<!-- templates/confirm_delete.html -->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="container">
+        <h2 class="delete-heading">Are you sure you want to delete {{ hosteller.name }}?</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="form-actions">
+                <button type="submit" class="delete-button">Yes, delete</button>
+                <a href="{% url 'hosteller_list' hosteller.hostel.id %}" class="cancel-button">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            margin: 0 auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .delete-heading {
+            color: #4C9C9C;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        button, .cancel-button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .delete-button {
+            background-color: #F44336; /* Red color for delete */
+            color: white;
+            border: none;
+        }
+
+        .delete-button:hover {
+            background-color: #D32F2F; /* Darker red */
+        }
+
+        .delete-button:active {
+            background-color: #C62828; /* Even darker red */
+        }
+
+        .cancel-button {
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            color: white;
+            text-align: center;
+        }
+
+        .cancel-button:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+        }
+
+        .cancel-button:active {
+            background-color: #2F6C6C; /* Even darker greenish-blue */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+        }
+    </style>
+{% endblock %}

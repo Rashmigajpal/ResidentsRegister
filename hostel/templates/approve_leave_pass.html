@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Approve Leave Requests</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f7f9;
+            text-align: center;
+        }
+        h2 {
+            color: #333;
+        }
+        table {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        td {
+            background-color: #ffffff;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .status-pending {
+            color: #D9534F;
+            background: #FDECEC;
+        }
+        .status-approved {
+            color: #5CB85C;
+            background: #E6F7E6;
+        }
+        button {
+            padding: 8px 12px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: white;
+            font-weight: bold;
+            transition: 0.3s ease;
+        }
+        .pending-btn {
+            background-color: #D9534F;
+        }
+        .approved-btn {
+            background-color: #5CB85C;
+        }
+        button:hover {
+            opacity: 0.8;
+        }
+         .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Approve Leave Requests</h2>
+    <a class="back-link" href="{% url 'home' %}">Back to Home</a>
+
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Hosteller Name</th>
+            <th>Leave Type</th>
+            <th>From Date</th>
+            <th>To Date</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave_pass in leave_passes %}
+        <tr>
+            <td>{{ leave_pass.id }}</td>
+            <td>{{ leave_pass.hosteller.name }}</td>
+            <td>{{ leave_pass.get_leave_type_display }}</td>
+            <td>{{ leave_pass.from_date }}</td>
+            <td>{{ leave_pass.to_date }}</td>
+            <td>{{ leave_pass.reason }}</td>
+            <td class="status {% if leave_pass.status == 'pending' %}status-pending{% else %}status-approved{% endif %}" data-leave-id="{{ leave_pass.id }}">
+                {{ leave_pass.status }}
+            </td>
+            <td>
+                <button class="status-toggle-btn {% if leave_pass.status == 'pending' %}pending-btn{% else %}approved-btn{% endif %}" data-leave-id="{{ leave_pass.id }}">
+                    {% if leave_pass.status == "pending" %}
+                        Approve
+                    {% else %}
+                        Mark as Pending
+                    {% endif %}
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<script>
+document.querySelectorAll('.status-toggle-btn').forEach(button => {
+    button.addEventListener('click', function() {
+        const leaveId = this.dataset.leaveId;
+        const statusCell = document.querySelector(`.status[data-leave-id='${leaveId}']`);
+        const newStatus = statusCell.textContent.trim() === "pending" ? "approved" : "pending";
+
+        fetch('/hostel/approval-leave-pass/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ leave_id: leaveId, status: newStatus })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                statusCell.textContent = newStatus;
+                statusCell.classList.toggle('status-pending', newStatus === "pending");
+                statusCell.classList.toggle('status-approved', newStatus === "approved");
+
+                this.textContent = newStatus === "pending" ? "Approve" : "Mark as Pending";
+                this.classList.toggle('pending-btn', newStatus === "pending");
+                this.classList.toggle('approved-btn', newStatus === "approved");
+
+                alert("Leave status updated successfully!");
+            } else {
+                alert("Error updating leave status.");
+            }
+        })
+        .catch(error => console.error("Error:", error));
+    });
+});
+</script>
+
+</body>
+</html>

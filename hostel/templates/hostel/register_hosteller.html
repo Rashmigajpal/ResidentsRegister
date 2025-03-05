@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Hosteller</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: linear-gradient(135deg, #E6F7FF, #D9F2FF); /* Matching the gradient background */
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 20px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #4C9C9C;  /* Consistent with the home page */
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        .alert {
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            color: #fff;
+        }
+
+        .alert-success {
+            background-color: #4CAF50; /* Green for success messages */
+        }
+
+        .alert-error {
+            background-color: #f44336; /* Red for error messages */
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4C9C9C; /* Consistent with the button color on the home page */
+            color: #fff;
+            border: none;
+            font-size: 16px;
+            border-radius: 30px; /* Rounded corners like the home page buttons */
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #3A7D7D; /* Hover effect */
+            transform: scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .alert ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .alert ul li {
+            margin-bottom: 5px;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        a:hover {
+            color: #3A7D7D;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Register Hosteler</h1>
+
+        <!-- Display messages (success or error) -->
+        {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+
+        <!-- Form for registration -->
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- Automatically renders the form fields with labels and inputs -->
+            {{ form.as_p }}
+
+            <button type="submit">Register</button>
+        </form>
+
+        <!-- Display form errors -->
+        {% if form.errors %}
+        <div class="alert alert-error">
+            <ul>
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- Link to log in if the user already has an account -->
+        <a href="{% url 'login_hosteller' %}">Already have an account? Log in here.</a>
+    </div>
+</body>
+</html>

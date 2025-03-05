@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan QR Code</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to bottom, #e0f7fa, #ffffff); /* Light blue-to-white gradient */
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 50px;
+            color: #00796b; /* Soft greenish-blue */
+        }
+
+        .container {
+            margin: 20px auto;
+            max-width: 800px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            color: #00796b; /* Soft greenish-blue */
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-size: 1.2rem;
+            color: #333;
+        }
+
+        select, input[type="file"], button {
+            padding: 12px;
+            margin-top: 10px;
+            width: 100%;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 1rem;
+        }
+
+        select, input[type="file"] {
+            background-color: #f9f9f9;
+            color: #333;
+        }
+
+        button {
+            background-color: #00796b; /* Soft greenish-blue */
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #004d40; /* Darker shade of green */
+            transform: scale(1.05);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        #preview {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .button-container button {
+            flex: 1;
+            margin: 0 10px;
+        }
+
+        /* Messages */
+        .message {
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 5px;
+            font-size: 1.1rem;
+        }
+
+        .success {
+            background-color: #e6f7e6;
+            color: #2d862d;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Back to Home Button */
+        .back-home {
+            display: block;
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .back-home button {
+            padding: 10px 20px;
+            font-size: 1.2rem;
+            background-color: #00796b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-home button:hover {
+            background-color: #004d40;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Scan QR Code</h1>
+
+    <!-- Display Messages -->
+    {% if messages %}
+    <div class="message {{ message.tags }}">
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Venue Selection -->
+    <div class="container">
+        <h2>Select Venue</h2>
+        <form id="venue-selection-form">
+            <label for="venue">Choose Venue:</label>
+            <select id="venue" name="venue">
+                <option value="college">College</option>
+                <option value="outing">Outing</option>
+                <option value="home">Home</option>
+            </select>
+        </form>
+    </div>
+
+    <!-- QR Code Scanning Section -->
+    <div class="container">
+        <h2>Scan QR Code using Camera</h2>
+        <video id="preview" autoplay></video>
+        <div class="button-container">
+            <button id="start-camera">Start Camera</button>
+            <button id="stop-camera" class="hidden">Stop Camera</button>
+            <button id="capture" class="hidden">Capture</button>
+        </div>
+        <canvas id="canvas" class="hidden"></canvas>
+    </div>
+
+    <!-- QR Code Upload -->
+    <div class="container">
+        <h2>Upload QR Code Image</h2>
+        <form id="qr-code-form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="qr_code">Upload QR Code:</label>
+            <input type="file" id="qr_code" name="qr_code" accept="image/*" required>
+            <input type="hidden" name="venue" id="hidden-venue" value="college">
+            <button type="submit">Scan QR Code</button>
+        </form>
+    </div>
+
+    <!-- Back to Home Button -->
+    <div class="back-home">
+        <form action="{% url 'home' %}" method="get">
+            <button type="submit">Back to Home</button>
+        </form>
+    </div>
+
+    <script>
+    const startCameraButton = document.getElementById('start-camera');
+    const stopCameraButton = document.getElementById('stop-camera');
+    const captureButton = document.getElementById('capture');
+    const video = document.getElementById('preview');
+    const canvas = document.getElementById('canvas');
+    const venueSelect = document.getElementById('venue');
+    const hiddenVenueInput = document.getElementById('hidden-venue');
+
+    // Update hidden input field for venue when the user selects an option
+    venueSelect.addEventListener('change', () => {
+        hiddenVenueInput.value = venueSelect.value;
+    });
+
+    let mediaStream;
+
+    startCameraButton.addEventListener('click', async () => {
+        try {
+            mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
+            video.srcObject = mediaStream;
+            startCameraButton.classList.add('hidden');
+            stopCameraButton.classList.remove('hidden');
+            captureButton.classList.remove('hidden');
+        } catch (error) {
+            console.error('Error accessing the camera:', error);
+            alert('Could not access the camera. Please check your permissions.');
+        }
+    });
+
+    stopCameraButton.addEventListener('click', () => {
+        mediaStream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+        stopCameraButton.classList.add('hidden');
+        startCameraButton.classList.remove('hidden');
+        captureButton.classList.add('hidden');
+    });
+
+    captureButton.addEventListener('click', () => {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext('2d');
+        context.drawImage(video, 0, 0);
+
+        canvas.toBlob(async (blob) => {
+            if (!blob) {
+                alert('Could not capture the image. Please try again.');
+                return;
+            }
+
+            const data = new FormData();
+            data.append('qr_code', blob);
+            data.append('venue', hiddenVenueInput.value);
+
+            try {
+                const response = await fetch('{% url "scan_qr_code" %}', {
+                    method: 'POST',
+                    body: data,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    alert('There was an error scanning the QR code. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error scanning QR code:', error);
+                alert('There was an error scanning the QR code. Please try again.');
+            }
+        }, 'image/png');
+    });
+    </script>
+
+</body>
+</html>

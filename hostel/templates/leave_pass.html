@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Pass</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF); /* Soft blue gradient */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            background: #fff;
+            color: #333;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 80%;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #4C9C9C; /* Soft greenish-blue */
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1rem;
+            margin: 10px 0;
+        }
+
+        form {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            color: white;
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+            transform: translateY(-3px);
+        }
+
+        button:active {
+            background-color: #2F6C6C; /* Even darker greenish-blue */
+        }
+
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+    <script>
+        document.getElementById("submit-btn").disabled = false;
+    </script>
+
+</head>
+<body>
+
+    <div class="container">
+        <h1>Leave Pass Application</h1>
+        <h2>Leave Pass Form</h2>
+        <p>Logged in as: {{ hosteller.name }} (Roll Number: {{ hosteller.roll_number }})</p>
+
+        <form action="{% url 'submit_leave_pass' hosteller.roll_number %}" method="POST">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+            <button type="submit">Submit</button>
+        </form>
+
+
+<a href="{% url 'dashboard' hosteller.roll_number %}" class="back-link">← Back to Dashboard</a>
+    </div>
+
+</body>
+</html>

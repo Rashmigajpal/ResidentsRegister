@@ -1,0 +1,490 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Hostel Dashboard</title>
+        <style>
+        /* Global Styles */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f4f8;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            height: 102vh;
+            width: 100vw;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            background-color: #ffffff;
+            padding: 20px;
+            border-right: 2px solid #ddd;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 4px 0px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-section img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid #4ca7a8;
+        }
+
+        .profile-section h3 {
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        .profile-section p {
+            color: #777;
+        }
+
+        .view-profile-btn {
+            background-color: #4ca7a8;
+            color: #fff;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+            border: none;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .view-profile-btn:hover {
+            background-color: #39787a;
+            color: #f1f3fe;
+        }
+
+        .menu-item {
+            margin: 13px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .menu-item:hover {
+            background-color: #c8e8e9;
+        }
+
+        .signout-btn {
+            padding: 8px;
+            background-color: #ff5c5c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+
+        .signout-btn:hover {
+            background-color: #e04b4b;
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Welcome Section */
+        .welcome-section, .mess-details, .sports-section, .announcements {
+            background-color: white;
+            padding: 15px;
+            border-radius: 9px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .welcome-section {
+
+            position: relative;
+        }
+
+        .welcome-title {
+            font-size: 26px;
+            color: #4ca7a8;
+            margin-bottom: 15px;
+        }
+
+        .welcome-text {
+            color: #555;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+
+        .welcome-image {
+            width: 80px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+        }
+        .welcome-section {
+    height: 500px;
+
+}
+/* Main content layout adjustments */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    grid-template-rows: auto auto;
+     column-gap: 27px; /* Increases gap between columns only */
+    row-gap: 10px; /* Keep row gap unchanged or adjust as needed */
+    align-items: start;
+    padding: 20px;
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Welcome Section Adjustments */
+.welcome-section {
+    height: 250px; /* Decrease height */
+    position: relative;
+}
+
+/* Mess Details Section Adjustments */
+.mess-details {
+    height: 450px; /* Increase height */
+    position: relative;
+    top: -20px; /* Move upwards */
+}
+
+/* Ensure equal spacing */
+.welcome-section,
+.mess-details {
+    margin-left: 10px; /* Ensure both have the same left margin */
+}
+
+
+        .readmore-btn {
+            background-color: #4ca7a8;
+            border: 2px solid #4ca7a8;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            text-transform: uppercase;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: auto;
+            align-self: center;
+        }
+
+        .readmore-btn:hover {
+            background-color: #39787a;
+            color: #f1f3fe;
+        }
+
+        .sports-section {
+    position: relative;
+    margin-bottom: 10px; /* Increases the gap below the Sports section */
+
+    margin-right: 20px; /* Increase space on the right side */
+
+    height: 300px; /* Adjust as per your requirement */
+    overflow: hidden; /* Hide images outside the container */
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide-image {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the whole area without distortion */
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide-image.active {
+    opacity: 1;
+}
+
+.sports-caption {
+    margin-top: 10px;
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border-radius: 10px;
+    font-size: 16px;
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+}
+        /* Mess Details Section */
+        .mess-details img {
+     width: 100%; /* Increase width slightly beyond the container */
+    height: auto; /* Maintain aspect ratio */
+    max-height: 200px; /* Adjust height for better visibility */
+    border-radius: 10px;
+    margin-bottom: 5px; /* Reduce space below the image
+}
+.mess-details h3 {
+    font-size: 14px; /* Decrease font size */
+    padding: 0;  /* Remove all padding */
+    margin-bottom: 0; /* Adjust spacing */
+}
+
+
+
+
+        .mess-info {
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        .mess-item h6 {
+            color: #4ca7a8;
+            font-weight: bold;
+        }
+
+        .mess-item p {
+            font-size: 17px;
+            font-weight: bold;
+            color: #333;
+        }
+        .mess-details {
+    height: 350px;
+      padding-top: 0; /* Remove upper padding */
+    padding-left: 10px; /* Maintain consistent padding */
+    padding-right: 10px;
+    padding-bottom: 10px;
+}
+
+
+        /* Announcements Section */
+.announcement-title {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #f1f1f1; /* Subtle background for title */
+    border-radius: 5px;
+}
+
+.announcements {
+    margin-right: 20px; /* Increase space on the left side */
+    min-height: 250px; /* Adjust the height as needed */
+}
+
+.announcement-list {
+    max-height: 235px;
+    overflow-y: auto;
+}
+
+.announcement-item {
+    background-color: #fff; /* White background for announcements */
+    border: 1px solid #e0e0e0; /* Light border for separation */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+    cursor: grab; /* Make the cursor indicate that the item can be dragged */
+
+}
+.announcement-item:active {
+    cursor: grabbing; /* When the item is being dragged */
+}
+
+.announcement-item:hover {
+    transform: translateY(-3px); /* Lift the card slightly on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); /* Darker shadow on hover */
+}
+
+.announcement-item p {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #555; /* Subtle text color */
+}
+
+.announcement-item p strong {
+    color: #4C9C9C; /* Soft greenish-blue for title */
+    font-size: 16px;
+}
+
+.announcement-item i {
+    font-style: italic;
+    color: #888; /* Lighter color for the 'at' message */
+}
+
+.event-date {
+    font-size: 12px;
+    color: #999; /* Lighter color for the event date */
+    margin-top: 5px;
+    display: block;
+}
+
+        .profile-img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto;
+}
+
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="profile-section">
+    {% if hosteller.student_image %}
+    <img src="{{ hosteller.student_image.url }}" alt="Profile Image" class="profile-img">
+{% else %}
+    <img src="{% static 'Student_images/dumm.jpeg' %}" alt="Default Image" class="profile-img">
+{% endif %}
+
+            <h3>{{ hosteller.name }}</h3>
+            <p>{{ hosteller.roll_number }}</p>
+            <button class="view-profile-btn">
+                <a href="{% url 'hosteller_detail' roll_number=hosteller.roll_number %}">View Profile</a>
+            </button>
+        </div>
+
+        <div>
+            <div class="menu-item"><a href="{% url 'gallery' hosteller.roll_number %}">Gallery</a></div>
+            <div class="menu-item"><a href="{{ submit_leave_pass_url }}">Leave</a></div>
+            <div class="menu-item"><a href="{{ submit_complaint_url }}">Complaints</a></div>
+            <div class="menu-item"><a href="{{ submit_payment_url }}">Payment</a></div>
+            <div class="menu-item"><a href="{{ submit_feedback_url }}">Feedback</a></div>
+        </div>
+
+        <div class="signout-btn">
+            <a href="{% url 'home' %}">SIGN OUT</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Welcome Section -->
+        <div class="welcome-section">
+            <h2 class="welcome-title">GEC Girls Hostel Jagdalpur</h2>
+            <p class="welcome-text">The hostel facility is available to regular students who are on the rolls of the
+                institute depending upon availability.<a href="{% url 'about_hostel' hosteller.roll_number %}" class="read-more-link">Read More</a></p>
+        </div>
+
+<!-- Gallery Section -->
+<div class="sports-section">
+    <h3 class="section-title">Gallery</h3>
+    <div class="image-container">
+        {% for image in gallery_images %}
+            <img src="{{ image.image.url }}" alt="Gallery Image" class="slide-image {% if forloop.first %}active{% endif %}">
+        {% empty %}
+            <p>No images available in the gallery.</p>
+        {% endfor %}
+    </div>
+    <p class="sports-caption">Recent hostel activities</p>
+</div>
+
+
+
+        <!-- Mess Details Section -->
+        {% load static %}
+
+        {% load static %}
+<div class="mess-details">
+    <h3>Mess Details</h3>
+    <img alt="Mess Image" class="mess-image" src="{% static 'clg_image/mess.jpeg' %}">
+    <div class="mess-info">
+        <div class="mess-item">
+            <h4>Last</h4>
+            <p>₹{{ mess_details.last_amount }}</p>
+        </div>
+        <div class="mess-item">
+            <h4>Used</h4>
+            <p>₹{{ mess_details.current_amount }}</p>
+        </div>
+        <div class="mess-item">
+            <h4>Left</h4>
+            <p>₹{{ mess_details.left_amount }}</p>
+        </div>
+        <div class="mess-item">
+            <h4>Total</h4>
+            <p>₹{{ mess_details.total_amount }}</p>
+        </div>
+    </div>
+</div>
+
+
+       <!-- Announcements Section -->
+<!-- Announcements Section -->
+<div class="announcements">
+    <h3 class="announcement-title">Latest Announcements</h3>
+    <div class="announcement-list">
+        {% for announcement in latest_announcements %}
+            <div class="announcement-item">
+                <p><strong>{{ announcement.title }}</strong> <i>at {{ announcement.message }}</i> <br><small class="event-date">Event Date: {{ announcement.created_at|date:"F j, Y, H:i" }}</small></p>
+            </div>
+        {% empty %}
+            <div class="announcement-item">
+                <p>No announcements available.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+    </div>
+</div>
+<script>
+    let currentIndex = 0;
+const images = document.querySelectorAll('.slide-image');
+const totalImages = images.length;
+
+function showNextImage() {
+    images[currentIndex].classList.remove('active');  // Remove active class from current image
+    currentIndex = (currentIndex + 1) % totalImages; // Move to the next image, loop back to 0 after last image
+    images[currentIndex].classList.add('active');    // Add active class to the new image
+}
+
+setInterval(showNextImage, 2000); // Change image every 2 seconds
+
+</script>
+</body>
+</html>
+
+

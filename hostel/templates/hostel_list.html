@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hostel</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF);
+            margin: 0;
+            padding: 0;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 90%;
+            padding: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #4C9C9C; /* Soft greenish-blue */
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+    margin: 20px 0; /* Increased space between buttons */
+}
+
+        a {
+    display: inline-block; /* Ensures padding and margin work properly */
+    text-decoration: none;
+    color: #4C9C9C;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #4C9C9C;
+    padding: 15px 20px; /* Increased padding for bigger buttons */
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+        a:hover {
+            background-color: #4C9C9C;
+            color: white;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                width: 90%;
+            }
+
+            a {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Hostels</h1>
+        <ul>
+            {% for hostel in hostels %}
+            <li><a href="{% url 'hosteller_list' hostel.id %}">{{ hostel.name }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+</body>
+</html>

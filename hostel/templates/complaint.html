@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Submission</title>
+
+    <style>
+   /* General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: linear-gradient(to right, #E0F7FA, #FFFFFF);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+    text-align: center;
+}
+
+/* Centered Heading */
+.heading {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #00796B;
+    margin-bottom: 20px;
+}
+
+/* Form Container */
+.container {
+    width: 100%;
+    max-width: 420px; /* Standard width for better layout */
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+/* Form Fields */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    display: block;
+    margin-bottom: 5px;
+    color: #004D40;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    border-radius: 8px;
+    border: 1.5px solid #00796B;
+    background-color: #F9F9F9;
+    transition: 0.3s ease-in-out;
+}
+
+input:focus, select:focus, textarea:focus {
+    border-color: #004D40;
+    outline: none;
+    box-shadow: 0 0 8px rgba(0, 121, 107, 0.2);
+}
+
+textarea {
+    max-height: 100px; /* Prevent expanding */
+
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Button */
+button {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 400;
+    background: #00796B;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    transition: 0.3s ease-in-out;
+    margin-top: 10px;
+}
+
+button:hover {
+    background: #004D40;
+}
+
+/* Back Link */
+.back-link {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #00796B;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.back-link:hover {
+    color: #004D40;
+}
+
+/* Fade-in Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .container {
+        max-width: 95%;
+        padding: 20px;
+    }
+
+    .heading {
+        font-size: 1.5rem;
+    }
+}
+</style>
+    <script>
+    document.getElementById('submit-btn').disabled = false;
+</script>
+
+</head>
+<body>
+    <h1 class="heading">Complaint Submission</h1>
+    <div class="container">
+        <form method="POST" enctype="multipart/form-data" action="{% url 'submit_complaint' hosteller.roll_number %}">
+    {% csrf_token %}
+    <div class="form-group">
+        {{ form.as_p }}
+    </div>
+    <button type="submit">Submit</button>
+</form>
+
+        <a href="{% url 'dashboard' hosteller.roll_number %}" class="back-link">← Back to Dashboard</a>
+
+    </div>
+</body>

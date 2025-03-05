@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hostellers in {{ hostel.name }}</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF); /* Soft blue gradient */
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4C9C9C; /* Soft greenish-blue */
+        }
+
+        .hosteller-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .hosteller-list li {
+            background: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 10px 0;
+            padding: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .hosteller-list li:hover {
+            background-color: #f9f9f9;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .hosteller-list li img {
+            max-width: 150px;
+            margin-top: 10px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .hosteller-list li a {
+            color: #4C9C9C; /* Soft greenish-blue */
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .hosteller-list li a:hover {
+            text-decoration: underline;
+        }
+
+        .download-link {
+            color: #4C9C9C; /* Soft greenish-blue */
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .download-link:hover {
+            text-decoration: underline;
+        }
+
+        .total-count {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .back-link {
+            margin-top: 20px;
+            display: inline-block;
+            color: #4C9C9C;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hostellers in {{ hostel.name }}</h1>
+    <p class="total-count">Total Hostellers in this Hostel: {{ total_hostellers|default:"0" }}</p>
+    <a href="{% url 'home' %}" class="back-link">Back to home</a>
+
+    <ul class="hosteller-list">
+        {% for hosteller in hostellers %}
+            <li>
+                <strong>Name:</strong> {{ hosteller.name }}<br>
+                <strong>Roll Number:</strong> {{ hosteller.roll_number }}<br>
+                <strong>Mobile:</strong> {{ hosteller.mobile_number }}<br>
+                <strong>Branch:</strong> {{ hosteller.branch }}<br>
+                <strong>Semester:</strong> {{ hosteller.semester }}<br>
+                <strong>Address:</strong> {{ hosteller.address }}<br>
+
+                {% if hosteller.qr_image %}
+                    <div>
+                        <strong>Your QR Code:</strong>
+                        <img src="{% static 'qr_codes/qr_code_'|add:hosteller.roll_number|add:'.png' %}" alt="QR Code for {{ hosteller.name }}">
+                        <br>
+                        <a href="{% static 'qr_codes/qr_code_'|add:hosteller.roll_number|add:'.png' %}" class="download-link" download="qr_code_{{ hosteller.roll_number }}.png">Download QR Code</a>
+                    </div>
+                {% endif %}
+
+                <br>
+                <a href="{% url 'hosteller_detail' hosteller.roll_number %}">View Details</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>

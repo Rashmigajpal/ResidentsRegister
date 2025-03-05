@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #4C9C9C; /* Soft greenish-blue */
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        form input, form select, form button {
+            margin: 12px 0;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 10px;
+            border: 2px solid #4C9C9C; /* Soft greenish-blue border */
+            transition: all 0.3s ease;
+        }
+
+        form input, form select {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            background-color: #4C9C9C; /* Soft greenish-blue */
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+
+        button:hover {
+            background-color: #3A7D7D; /* Darker greenish-blue */
+        }
+
+        button:active {
+            background-color: #2F6C6C; /* Even darker greenish-blue */
+            transform: translateY(2px);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #4C9C9C;
+            text-decoration: none;
+        }
+
+        a:hover {
+            color: #3A7D7D;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                width: 100%;
+                height: auto;
+                padding: 20px;
+            }
+        }
+        .back-link {
+    display: block;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #00796B;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Record Attendance</h1>
+        <p><strong>Hosteller:</strong> {{ hosteller.name }}</p> <!-- Display Hosteller Name -->
+        <form method="POST" enctype="multipart/form-data" action="{% url 'submit_attendance' hosteller.roll_number %}">
+            {% csrf_token %}
+            <div class="form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+<a href="{% url 'dashboard' hosteller.roll_number %}" class="back-btn">← Back to Dashboard</a>
+    </div>
+</body>
+</html>

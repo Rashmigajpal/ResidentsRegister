@@ -1,0 +1,145 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <style>
+        /* Global Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #333;
+            background: linear-gradient(135deg, #E6F7FF, #FFFFFF);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header Styles */
+        h1, h2 {
+            text-align: center;
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.2);
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #4C9C9C;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            color: #333;
+        }
+
+        /* Logo Styling */
+        .logo {
+            margin-bottom: 40px; /* Increase space to position logo higher */
+        }
+
+        .logo img {
+            width: 250px;  /* Make logo bigger */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Navigation Styles */
+        nav {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        a {
+            padding: 14px 25px;
+            background: #4C9C9C;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        a:hover {
+            background: #3A7D7D;
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        a:active {
+            background: #2F6C6C;
+        }
+
+        /* Footer Styles */
+        footer {
+            position: absolute;
+            bottom: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: #4C9C9C;
+        }
+
+        footer a {
+            color: #3A7D7D;
+            text-decoration: none;
+            transition: color 0.3s ease-in-out;
+        }
+
+        footer a:hover {
+            color: #2F6C6C;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Logo Section -->
+    <div class="logo">
+<img src="{% static 'clg_image/logo.png' %}" alt="Logo">
+
+    </div>
+
+    <!-- Page Title -->
+    <h1>Welcome to ResidentRegister</h1>
+    <h2>Secure Entry and Management</h2>
+
+    <!-- Navigation -->
+    <nav>
+        <a href="{% url 'hostel_list' %}">View Hostels</a>
+        <a href="{% url 'login_hosteller' %}">Login</a>
+        <a href="{% url 'register_hosteller' %}">Register</a>
+        <a href="{% url 'scan_qr_code' %}">Scan QR Code</a>
+        <a href="{% url 'admin_dashboard' %}">Admin Dashboard</a>
+    </nav>
+
+    <!-- Footer -->
+    <footer>
+
+    </footer>
+</body>
+</html>
