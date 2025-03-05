@@ -192,9 +192,8 @@ EMAIL_HOST_USER = 'shiva171403@gmail.com'
 EMAIL_HOST_PASSWORD = 'acbunlrbzaqerqay'  # Use the generated App Password here
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-TWILIO_ACCOUNT_SID = 'AC96b82b6831ef8c1e981378965bbc0389'
-TWILIO_AUTH_TOKEN = '18c40cbd9eca94ef7b4da2987b4e06e2'
-TWILIO_PHONE_NUMBER = '+12544061243'
+
+
 
 
 # settings.py
