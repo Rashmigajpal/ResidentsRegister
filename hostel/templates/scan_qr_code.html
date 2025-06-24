@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Scan QR Code</title>
     <style>
-        /* General Styles */
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(to bottom, #e0f7fa, #ffffff); /* Light blue-to-white gradient */
+            background: linear-gradient(to bottom, #e0f7fa, #ffffff);
             color: #333;
             margin: 0;
             padding: 20px;
@@ -18,7 +17,7 @@
             text-align: center;
             font-size: 2.5rem;
             margin-top: 50px;
-            color: #00796b; /* Soft greenish-blue */
+            color: #00796b;
         }
 
         .container {
@@ -32,7 +31,7 @@
 
         h2 {
             font-size: 1.8rem;
-            color: #00796b; /* Soft greenish-blue */
+            color: #00796b;
             margin-bottom: 15px;
         }
 
@@ -57,7 +56,7 @@
         }
 
         button {
-            background-color: #00796b; /* Soft greenish-blue */
+            background-color: #00796b;
             color: white;
             font-size: 1.2rem;
             cursor: pointer;
@@ -66,7 +65,7 @@
         }
 
         button:hover {
-            background-color: #004d40; /* Darker shade of green */
+            background-color: #004d40;
             transform: scale(1.05);
         }
 
@@ -98,7 +97,6 @@
             margin: 0 10px;
         }
 
-        /* Messages */
         .message {
             padding: 12px;
             margin: 15px 0;
@@ -116,7 +114,6 @@
             color: #721c24;
         }
 
-        /* Back to Home Button */
         .back-home {
             display: block;
             margin: 30px auto;
@@ -131,145 +128,236 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background-color 0.3s;
         }
 
         .back-home button:hover {
             background-color: #004d40;
         }
+
+        #preview-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        #scanner-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 3px dashed #00796b;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 121, 107, 0.5);
+    z-index: 2;
+    animation: scanner-blink 2s infinite;
+}
+
+        @keyframes scanner-blink {
+            0%, 100% { border-color: #00796b; }
+            50% { border-color: #004d40; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>Scan QR Code</h1>
+<h1>Scan QR Code</h1>
 
-    <!-- Display Messages -->
-    {% if messages %}
+<!-- Display Django messages -->
+{% if messages %}
     <div class="message {{ message.tags }}">
         {% for message in messages %}
             <p>{{ message }}</p>
         {% endfor %}
     </div>
-    {% endif %}
+{% endif %}
 
-    <!-- Venue Selection -->
-    <div class="container">
-        <h2>Select Venue</h2>
-        <form id="venue-selection-form">
-            <label for="venue">Choose Venue:</label>
-            <select id="venue" name="venue">
-                <option value="college">College</option>
-                <option value="outing">Outing</option>
-                <option value="home">Home</option>
-            </select>
-        </form>
-    </div>
+<!-- Venue Selection -->
+<div class="container">
+    <h2>Select Venue</h2>
+    <form id="venue-selection-form">
+        <label for="venue">Choose Venue:</label>
+        <select id="venue" name="venue">
+            <option value="college">College</option>
+            <option value="outing">Outing</option>
+            <option value="home">Home</option>
+        </select>
+    </form>
+</div>
 
-    <!-- QR Code Scanning Section -->
-    <div class="container">
-        <h2>Scan QR Code using Camera</h2>
+<!-- QR Code Scanner -->
+<div class="container">
+    <h2>Scan QR Code using Camera</h2>
+    <div id="preview-container">
         <video id="preview" autoplay></video>
-        <div class="button-container">
-            <button id="start-camera">Start Camera</button>
-            <button id="stop-camera" class="hidden">Stop Camera</button>
-            <button id="capture" class="hidden">Capture</button>
-        </div>
-        <canvas id="canvas" class="hidden"></canvas>
+        <div id="scanner-box"></div>
     </div>
-
-    <!-- QR Code Upload -->
-    <div class="container">
-        <h2>Upload QR Code Image</h2>
-        <form id="qr-code-form" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label for="qr_code">Upload QR Code:</label>
-            <input type="file" id="qr_code" name="qr_code" accept="image/*" required>
-            <input type="hidden" name="venue" id="hidden-venue" value="college">
-            <button type="submit">Scan QR Code</button>
-        </form>
+    <div class="button-container">
+        <button id="start-camera">Start Camera</button>
+        <button id="stop-camera" class="hidden">Stop Camera</button>
     </div>
+    <canvas id="canvas" class="hidden"></canvas>
+</div>
 
-    <!-- Back to Home Button -->
-    <div class="back-home">
-        <form action="{% url 'home' %}" method="get">
-            <button type="submit">Back to Home</button>
-        </form>
-    </div>
+<!-- QR Upload Section -->
+<div class="container">
+    <h2>Upload QR Code Image</h2>
+    <form id="qr-code-form" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="qr_code">Upload QR Code:</label>
+        <input type="file" id="qr_code" name="qr_code" accept="image/*" required>
+        <input type="hidden" name="venue" id="hidden-venue" value="college">
+        <button type="submit">Scan QR Code</button>
+    </form>
+</div>
 
-    <script>
-    const startCameraButton = document.getElementById('start-camera');
-    const stopCameraButton = document.getElementById('stop-camera');
-    const captureButton = document.getElementById('capture');
-    const video = document.getElementById('preview');
-    const canvas = document.getElementById('canvas');
-    const venueSelect = document.getElementById('venue');
-    const hiddenVenueInput = document.getElementById('hidden-venue');
+<!-- Back to Home -->
+<div class="back-home">
+    <form action="{% url 'home' %}" method="get">
+        <button type="submit">Back to Home</button>
+    </form>
+</div>
 
-    // Update hidden input field for venue when the user selects an option
-    venueSelect.addEventListener('change', () => {
-        hiddenVenueInput.value = venueSelect.value;
-    });
+<!-- jsQR CDN -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
 
-    let mediaStream;
+<!-- Scanner Script -->
+<script>
+const startCameraButton = document.getElementById('start-camera');
+const stopCameraButton = document.getElementById('stop-camera');
+const video = document.getElementById('preview');
+const canvas = document.getElementById('canvas');
+const venueSelect = document.getElementById('venue');
+const hiddenVenueInput = document.getElementById('hidden-venue');
 
-    startCameraButton.addEventListener('click', async () => {
-        try {
-            mediaStream = await navigator.mediaDevices.getUserMedia({ video: true });
-            video.srcObject = mediaStream;
-            startCameraButton.classList.add('hidden');
-            stopCameraButton.classList.remove('hidden');
-            captureButton.classList.remove('hidden');
-        } catch (error) {
-            console.error('Error accessing the camera:', error);
-            alert('Could not access the camera. Please check your permissions.');
-        }
-    });
+let mediaStream;
+let scanning = false;
 
-    stopCameraButton.addEventListener('click', () => {
+venueSelect.addEventListener('change', () => {
+    hiddenVenueInput.value = venueSelect.value;
+});
+
+startCameraButton.addEventListener('click', async () => {
+    try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = mediaStream;
+        video.setAttribute('playsinline', true);
+        video.play();
+
+        startCameraButton.classList.add('hidden');
+        stopCameraButton.classList.remove('hidden');
+        scanning = true;
+
+        scanQRCode();
+    } catch (error) {
+        alert('Camera access denied or not available.');
+        console.error(error);
+    }
+});
+
+stopCameraButton.addEventListener('click', () => {
+    stopCamera();
+});
+
+function stopCamera() {
+    if (mediaStream) {
         mediaStream.getTracks().forEach(track => track.stop());
-        video.srcObject = null;
-        stopCameraButton.classList.add('hidden');
-        startCameraButton.classList.remove('hidden');
-        captureButton.classList.add('hidden');
-    });
+    }
+    video.srcObject = null;
+    scanning = false;
+    startCameraButton.classList.remove('hidden');
+    stopCameraButton.classList.add('hidden');
+}
+let beep;
 
-    captureButton.addEventListener('click', () => {
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext('2d');
-        context.drawImage(video, 0, 0);
+startCameraButton.addEventListener('click', async () => {
+    // Unlock audio context
+    beep = new Audio('/static/beep.mpeg');
+    beep.load();  // Preload
+    try { await beep.play(); beep.pause(); beep.currentTime = 0; } catch (e) {}
 
-        canvas.toBlob(async (blob) => {
-            if (!blob) {
-                alert('Could not capture the image. Please try again.');
+    // Continue with camera access
+    try {
+        mediaStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+        video.srcObject = mediaStream;
+        video.setAttribute('playsinline', true);
+        video.play();
+
+        startCameraButton.classList.add('hidden');
+        stopCameraButton.classList.remove('hidden');
+        scanning = true;
+
+        scanQRCode();
+    } catch (error) {
+        alert('Camera access denied or not available.');
+        console.error(error);
+    }
+});
+
+function playFeedback() {
+    if (navigator.vibrate) navigator.vibrate(500);
+    if (beep) {
+        beep.currentTime = 0;
+        beep.play();
+    }
+}
+
+async function scanQRCode() {
+    const context = canvas.getContext('2d');
+
+    const scanLoop = async () => {
+        if (!scanning) return;
+
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+            canvas.height = video.videoHeight;
+            canvas.width = video.videoWidth;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            if (code) {
+                scanning = false;
+                playFeedback();
+                stopCamera();
+                await submitQRData(code.data);
                 return;
             }
+        }
 
-            const data = new FormData();
-            data.append('qr_code', blob);
-            data.append('venue', hiddenVenueInput.value);
+        requestAnimationFrame(scanLoop);
+    };
 
-            try {
-                const response = await fetch('{% url "scan_qr_code" %}', {
-                    method: 'POST',
-                    body: data,
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    }
-                });
+    scanLoop();
+}
 
-                if (response.redirected) {
-                    window.location.href = response.url;
-                } else {
-                    alert('There was an error scanning the QR code. Please try again.');
+async function submitQRData(qrText) {
+    const data = new FormData();
+    data.append('venue', hiddenVenueInput.value);
+
+    canvas.toBlob(async (blob) => {
+        data.append('qr_code', blob, 'scan.png');
+
+        try {
+            const response = await fetch('{% url "scan_qr_code" %}', {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}'
                 }
-            } catch (error) {
-                console.error('Error scanning QR code:', error);
-                alert('There was an error scanning the QR code. Please try again.');
+            });
+
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                alert('Scan error. Try again.');
             }
-        }, 'image/png');
-    });
-    </script>
+        } catch (error) {
+            console.error('Submit error:', error);
+            alert('Could not submit scan.');
+        }
+    }, 'image/png');
+}
+</script>
 
 </body>
 </html>

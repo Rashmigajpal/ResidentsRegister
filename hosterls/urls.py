@@ -20,14 +20,6 @@ from hostel.views import home,login_hosteller,generate_invoice
 from django.conf import settings
 from django.conf.urls.static import static
 
-urlpatterns = [
-    # Your other URL patterns
-
-]
-
-# Serve media files during development
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 from hostel import views # Import the login view
@@ -37,10 +29,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/login/', login_hosteller, name='login_hosteller'),  # Map the URL to the view
     path('', home, name='home'),  # Add this line for the home page
-    path('hostel/', include('hostel.urls')),  # Make sure to replace 'your_app_name' with the actual app name
     #path('hostels/', include('scanexit.urls')),  # Make sure to replace 'your_app_name' with the actual app name
     path('', include('hostel.urls')),  # Replace 'your_app' with the actual app name
 
 ]
 if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

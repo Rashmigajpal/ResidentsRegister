@@ -24,7 +24,7 @@ class HostellerRegistrationForm(forms.ModelForm):
 class LeavePassForm(forms.ModelForm):
     class Meta:
         model = LeavePass
-        fields = ['leave_id','from_date', 'to_date', 'reason']
+        fields = ['from_date', 'to_date', 'reason']
         widgets = {
             'from_date': forms.DateInput(attrs={'type': 'date'}),
             'to_date': forms.DateInput(attrs={'type': 'date'}),
@@ -36,7 +36,9 @@ class LeavePassForm(forms.ModelForm):
 class ComplaintForm(forms.ModelForm):
     class Meta:
         model = Complaint
-        fields = ['hosteller', 'complaint_id', 'complaint_type','status', 'description']
+        fields = ['hosteller', 'complaint_type','status', 'description']
+        exclude = ['hosteller']  # ❗ This is key
+
 
     complaint_id = forms.ChoiceField(choices=Complaint.COMPLAINT_CHOICES, label="Complaint Type")
 

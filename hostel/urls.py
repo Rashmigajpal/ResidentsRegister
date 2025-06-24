@@ -20,6 +20,8 @@ urlpatterns = [
     # Registration and login pages
     path('register/', views.register_hosteller, name='register_hosteller'),
     path('login/', views.login_hosteller, name='login_hosteller'),
+    path('logout/', logout_view, name='logout_view'),
+
 
     # Hostel list and details
     path('hostels/', hostel_list, name='hostel_list'),
@@ -50,7 +52,7 @@ urlpatterns = [
     path('announcements/', views.announcement_list, name='announcement_list'),
     path('upload_gallery_image/<str:roll_number>/', upload_gallery_image, name='gallery'),
 path('about-hostel/<str:hosteller_id>/', views.about_hostel, name='about_hostel'),
-    path('mess-details/', mess_details_view, name='mess_details'),
+    path('mess-details/', mess_details_view, name='mess_details_view'),
 
     # Success page
     path('success/', success_page, name='success_page'),
@@ -99,5 +101,8 @@ path('about-hostel/<str:hosteller_id>/', views.about_hostel, name='about_hostel'
 ]
 # Serve media files in development mode
 if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 

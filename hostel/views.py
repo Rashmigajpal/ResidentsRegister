@@ -43,14 +43,17 @@ def logout_view(request):
 
 
 def home(request):
-    return render(request, 'home.html')  # Create a home.html template
+    return render(request, 'home.html')  # Create a home.html templates
+
 
 @login_required
 def admin_dashboard(request):
-    if request.user.is_staff:  # Check if the user is an admin
-        return render(request, 'admin_dashboard.html')  # Render your admin dashboard template
+    if request.user.is_staff:
+        return render(request, 'admin_dashboard.html')
     else:
-        return redirect('home')  # Redirect non-admin users to home
+        return redirect('home')
+
+
 
 def register_hosteller(request):
     if request.method == 'POST':
@@ -163,7 +166,7 @@ def hosteller_list(request, hostel_id):
     return render(request, 'hosteller_list.html', {
         'hostel': hostel,
         'hostellers': hostellers,
-        'total_hostellers': total_hostellers  # Pass the count to the template
+        'total_hostellers': total_hostellers  # Pass the count to the templates
     })
 
 
@@ -437,9 +440,9 @@ class DashboardView(TemplateView):
             'submit_leave_pass_url': submit_leave_pass_url,
             'latest_announcements': latest_announcements,  # Add the latest announcements to the context
             'gallery_images': gallery_images,  # Add gallery images to the context
-            'mess_details': mess_details,  # Pass mess details to template
+            'mess_details': mess_details,  # Pass mess details to templates
 
-            # Pass URL to template
+            # Pass URL to templates
 
             # add other context variables if needed
         }
@@ -478,22 +481,21 @@ def submit_leave_pass(request, hosteller_id):
 
     return render(request, 'leave_pass.html', {'form': form, 'hosteller': hosteller})
 
-
-
 def submit_complaint(request, hosteller_id):
-    # Fetch the Hosteller instance from the database
     hosteller = get_object_or_404(Hosteller, roll_number=hosteller_id)
 
     if request.method == 'POST':
-        print(request.POST)  # Debugging: Check if form data is received
+        print(request.POST)  # Debugging
         form = ComplaintForm(request.POST)
+
         if form.is_valid():
             complaint = form.save(commit=False)
-            complaint.hosteller = hosteller  # Assign the correct Hosteller instance
+            complaint.hosteller = hosteller
             complaint.save()
-            return redirect('complaint_success',hosteller_id=hosteller.roll_number)  # Redirect after submission
+            return redirect('complaint_success', hosteller_id=hosteller.roll_number)
         else:
-            print("Form is invalid:", form.errors)  # Debugging: Print errors if form is invalid
+            print("Form is invalid:", form.errors)
+
     else:
         form = ComplaintForm()
 
@@ -624,7 +626,7 @@ def submit_payment(request, hosteller_id):
 class MessDetailView(View):
     def get(self, request):
         mess_details = MessDetail.objects.all()  # Get all mess details
-        return render(request, 'mess_detail_list.html', {'mess_details': mess_details})
+        return render(request, 'mess_details.html', {'mess_details': mess_details})
 
 #/////////////////////////////////////admin access////////////////////
 

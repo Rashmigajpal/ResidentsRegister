@@ -1,10 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Mess Details</title>
 </head>
 <body>
-
+    <h1>Mess Menu</h1>
+    {% for detail in mess_details %}
+        <p>{{ detail.meal_type }}: {{ detail.menu }}</p>
+    {% empty %}
+        <p>No mess details available.</p>
+    {% endfor %}
 </body>
 </html>
